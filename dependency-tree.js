@@ -1,6 +1,6 @@
 /**
- * DependencyTreeJS - A plugin to draw parse trees
- * Copyright (C) 2017  KotlinNLP Authors <github@kotlinnlp.com>
+ * DependencyTreeJS - A plugin to draw parse trees.
+ * Copyright (C) 2017 KotlinNLP Authors <github@kotlinnlp.com>
  */
 
 (function($) {
