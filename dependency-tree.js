@@ -105,6 +105,7 @@
             "padding": {
               "horizontal": 10
             },
+            "spacing": 2,
             "path": {
               "width": 1,
               "spacing": 6,
@@ -461,8 +462,8 @@
       };
 
       this.setInitialAtomsPosition = function() {
-        var atomsTop = this.settings.styles.sentence.margin.vertical +
-          ((this.levels.length + 1) * this.settings.styles.level.height);
+        var levelOuterHeight = this.settings.styles.level.height + this.settings.styles.deprel.spacing,
+            atomsTop = this.settings.styles.sentence.margin.vertical + (levelOuterHeight * (this.levels.length + 1));
 
         for (var i = 0; i < this.atoms.length; i++) {
           var atom = this.atoms[i];
@@ -534,7 +535,7 @@
         this.setInitialAtomsPosition();
 
         for (var i = atomsLength - 1; i >= 0; i--) {
-          var atom = this.sortedAtoms[i],
+          var atom = sortedAtoms[i],
               deprelWidth = atom.deprel.width + (atom.deprel.padding.horizontal * 2);
 
           if (atom.isRoot()) {
@@ -556,8 +557,7 @@
       };
 
       this.setAtomsPositions = function() {
-        var deprelBBox,
-            lenAtoms = this.atoms.length;
+        var lenAtoms = this.atoms.length;
 
         for(var i = 0; i < lenAtoms; i++) {
           var atom = this.atoms[i],
@@ -596,7 +596,7 @@
         
         this.sentenceId = sentenceId;
         this.arcs = { width: 0, map: {} };
-        this.level = { height: style.level.height };
+        this.level = { height: style.level.height + style.deprel.spacing };
         this.form = { width: 0, height: 0, element: null, normal: style.atom.form.normal,
           hover: style.atom.form.hover, click: style.atom.form.click };
 
@@ -614,7 +614,8 @@
 
         this.deprel = {
           level: 0, width: 0, height: 0, element: null, padding: style.deprel.padding,
-          normal: style.deprel.normal, hover: style.deprel.hover, click: style.deprel.click
+          normal: style.deprel.normal, hover: style.deprel.hover, click: style.deprel.click,
+          spacing: style.deprel.spacing
         };
 
         this.deprelPath = {
@@ -755,7 +756,7 @@
       };
 
       this.setDeprelPosition = function(governor) {
-        var atomArcX = this.getArcX(this.atomHead)
+        var atomArcX = this.getArcX(this.atomHead),
             deprelY = this.rect.y - (this.deprel.level * this.level.height),
             deprelX = atomArcX;
 
@@ -774,9 +775,9 @@
         var atomArcX = this.getArcX(this.atomHead),
             bbox = this.deprel.element.getBBox(),
             path = [
-              'M', bbox.x, bbox.y + bbox.height,
-              'L', bbox.x + bbox.width, bbox.y + bbox.height,
-              'M', atomArcX, bbox.y + bbox.height,
+              'M', bbox.x, bbox.y + bbox.height + this.deprel.spacing,
+              'L', bbox.x + bbox.width, bbox.y + bbox.height + this.deprel.spacing,
+              'M', atomArcX, bbox.y + bbox.height + this.deprel.spacing,
               'L', atomArcX, this.rect.y
             ];
         
@@ -784,8 +785,8 @@
           var govArcX = governor.getArcX(this.atomSynId);
           path = [
             'M', govArcX, governor.rect.y,
-            'L', govArcX, bbox.y + bbox.height,
-            'L', atomArcX, bbox.y + bbox.height,
+            'L', govArcX, bbox.y + bbox.height + this.deprel.spacing,
+            'L', atomArcX, bbox.y + bbox.height + this.deprel.spacing,
             'L', atomArcX, this.rect.y
           ]
         }
