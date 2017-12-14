@@ -24,7 +24,7 @@ HTML:
 JS:
 
 ```javascript
-var data = [ /* Parsed sentences data */ ];
+var data = [ /* Parsed sentences data */ ],
     DT = $("#dependency-tree").dependencyTree();
 
 DT.draw(data);
@@ -86,7 +86,7 @@ Example:
 
 ## Custom options
 
-Is it possible to pass a custom `options` object:
+It is possible to pass a custom `options` object:
 
 ```javascript
 var options = {
