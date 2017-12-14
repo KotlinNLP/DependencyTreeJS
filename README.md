@@ -216,6 +216,7 @@ $("#dependency-tree").dependencyTree(options);
             "padding": {
                 "horizontal": 10
             },
+            "spacing": 2,
             "path": {
                 "width": 1,
                 "normal": {
