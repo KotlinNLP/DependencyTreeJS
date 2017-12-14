@@ -27,6 +27,12 @@
                 "horizontal": 10,
                 "vertical": 7
               },
+              "normal": {
+                "fill": "",
+                "stroke": "#999",
+                "stroke-width": "1",
+                "r": 4
+              },
               "hover": {
                 "fill": "#B5B7EA",
                 "stroke": "#7679D8"
@@ -34,12 +40,6 @@
               "click": {
                 "fill": "#81B6EE",
                 "stroke": "#3987DA"
-              },
-              "normal": {
-                "fill": "",
-                "stroke": "#999",
-                "stroke-width": "1",
-                "r": 4
               }
             },
 
@@ -107,12 +107,12 @@
             },
             "path": {
               "width": 1,
+              "spacing": 6,
               "normal": {
                 "stroke": "#666",
                 "arrow-end": "classic-wide-long",
                 "stroke-width": 1
               },
-              "spacing": 6,
               "hover": {
                 "stroke": "#7679D8",
                 "arrow-end": "classic-wide-long",
@@ -132,7 +132,7 @@
         "drawDelay": 50
       };
 
-      _.settings = $.extend(_.defaultSettings, options);
+      _.settings = $.extend(true, {}, _.defaultSettings, options);
       _.parsed = null;
       _.clickedAtom = null;
       _.sentences = [];
