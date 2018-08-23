@@ -1,0 +1,29 @@
+{
+  "name": "dependency-tree",
+  "homepage": "https://github.com/KotlinNLP/DependencyTreeJS",
+  "authors": [
+    "KotlinNLP Authors <github@kotlinnlp.com>"
+  ],
+  "description": "A JavaScript plugin to draw dependency trees representing morpho-syntactic analysis.",
+  "main": "dependency-tree.js",
+  "keywords": [
+    "dependency-tree",
+    "morpho-syntactic-analysis",
+    "morphological-analysis",
+    "syntactic-analysis",
+    "syntax",
+    "text-analysis"
+  ],
+  "license": "MPL-2.0",
+  "dependencies": {
+    "raphael": "v2.2.7",
+    "jquery": "3.0.0"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
