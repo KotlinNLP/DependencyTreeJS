@@ -165,7 +165,7 @@
 
       _.settings = $.extend(true, {}, _.defaultSettings, options);
       _.parsed = null;
-      _.clickedAtom = null;
+      _.clickedElement = null;
       _.sentences = [];
       _.sentencesById = {};
       _.callback = null;
@@ -174,7 +174,7 @@
       _.container = $(element);
       _.container.click(function() {
         if (!_.wasMouseScrolling) {
-          _.resetClickedAtom();
+          _.resetClickedElement();
         }
       });
 
@@ -185,7 +185,7 @@
       var _ = this;
       
       _.parsed = null;
-      _.clickedAtom = null;
+      _.clickedElement = null;
       _.sentences = [];
       _.sentencesById = {};
       _.callback = null;
@@ -302,48 +302,54 @@
       sentence.addAtom(atomObj);
     };
 
-    DT.prototype.resetClickedAtom = function() {
+    DT.prototype.resetClickedElement = function() {
       var _ = this,
-          memClickedAtom;
+          memClickedElement;
 
-      if (_.clickedAtom != null) {
-        memClickedAtom = _.clickedAtom;
-        _.clickedAtom = null;
-        atomHoverOut.call(memClickedAtom);
+      if (_.clickedElement !== null) {
+        memClickedElement = _.clickedElement;
+        _.clickedElement = null;
+        elementHoverOut.call(memClickedElement);
       }
     };
 
-    function atomHoverIn() {
-      var atom = this,
-          _ = atom.DT;
+    function elementHoverIn() {
+      var element = this,
+          _ = element.DT;
 
-      if (_.clickedAtom != atom) {
-        atom.setActionStyles('hover');
+      if (_.clickedElement !== element) {
+        element.setActionStyles('hover');
       }
     }
 
-    function atomHoverOut() {
-      var atom = this,
-          _ = atom.DT;
+    function elementHoverOut() {
+      var element = this,
+          _ = element.DT;
 
-      if (_.clickedAtom != atom) {
-        atom.setActionStyles('normal');
+      if (_.clickedElement !== element) {
+        element.setActionStyles('normal');
+
+        if (_.clickedElement !== null) {
+          _.clickedElement.setActionStyles('click');
+        }
       }
     }
 
-    function atomClick(e) {
-      var atom = this,
-          _ = atom.DT
-          memClickedAtom = _.clickedAtom;
+    function elementClick(e) {
+      var element = this,
+          _ = element.DT;
+          memClickedElement = _.clickedElement;
 
-      _.resetClickedAtom();
+      _.resetClickedElement();
 
-      if (memClickedAtom != atom) {
-        atom.setActionStyles('click');
-        _.clickedAtom = atom;
+      if (memClickedElement !== element) {
+        element.setActionStyles('click');
+        _.clickedElement = element;
       }
 
-      e.stopPropagation();
+      if (typeof e !== 'undefined') {
+        e.stopPropagation();
+      }
     }
 
     function getDepsMap(atoms) {
@@ -734,8 +740,8 @@
         this.surfaceForm = (this.atomForm === null ? 'Ø' : this.atomForm);
         this.form.element = this.raphael.text(0, 0, this.surfaceForm).attr(this.form.normal);
         this.setBounds(this.form);
-        this.form.element.hover(atomHoverIn, atomHoverOut, this, this);
-        this.form.element.click(atomClick, this);
+        this.form.element.hover(elementHoverIn, elementHoverOut, this, this);
+        this.form.element.click(elementClick, this);
       };
 
       this.setFormPosition = function() {
@@ -771,8 +777,8 @@
 
         this.setBounds(this.rect);
         this.rect.element.toBack();
-        this.rect.element.hover(atomHoverIn, atomHoverOut, this, this);
-        this.rect.element.click(atomClick, this);
+        this.rect.element.hover(elementHoverIn, elementHoverOut, this, this);
+        this.rect.element.click(elementClick, this);
       };
 
       this.setRectPosition = function() {
