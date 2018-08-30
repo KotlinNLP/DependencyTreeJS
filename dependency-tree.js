@@ -886,6 +886,93 @@
       }
     }
 
+    function DTUnderline() {
+      this.sentence = null;
+      this.firstIndex = null;
+      this.lastIndex = null;
+      this.label = null;
+      this.path = null;
+      this.DT = null;
+
+      this.init = function(sentence, underline) {
+        this.sentence = sentence;
+        this.firstIndex = underline.first_index;
+        this.lastIndex = underline.last_index;
+        var style = sentence.settings.styles;
+
+        this.label = { element: null, text: underline.label, normal: style.underline.label.normal,
+          hover: style.underline.label.hover, click: style.underline.label.click,
+          spacing: style.underline.label.spacing
+        };
+
+        this.path = {
+          x: 0, y: 0, width: 0, height: style.underline.height, element: null,
+          normal: style.underline.path.normal, hover: style.underline.path.hover,
+          click: style.underline.path.click, spacing: style.underline.path.spacing
+        };
+      };
+
+      this.setDT = function(DT) {
+        this.DT = DT;
+      };
+
+      this.setPath = function() {
+        var firstAtom = this.sentence.atoms[this.firstIndex];
+        var lastAtom = this.sentence.atoms[this.lastIndex];
+        this.path.x = firstAtom.rect.x;
+        this.path.y = firstAtom.rect.y + firstAtom.rect.height + firstAtom.pos.height + firstAtom.pos.spacing + this.path.spacing;
+        this.path.width = lastAtom.rect.x + lastAtom.rect.width - firstAtom.rect.x;
+
+        this.path.element = this.sentence.raphael.path(
+          [
+            'M', this.path.x, this.path.y,
+            'L', this.path.x, this.path.y + this.path.height,
+            'L', this.path.x + this.path.width, this.path.y + this.path.height,
+            'L', this.path.x + this.path.width, this.path.y
+          ]
+        ).attr(this.path.normal);
+
+        this.setBounds(this.path);
+      };
+
+      this.setLabel = function() {
+        var pathBbox = this.path.element.getBBox();
+        this.label.element = this.sentence.raphael.text(0, 0, this.label.text).attr(this.label.normal);
+        this.label.element.attr({
+          'text-anchor': 'center',
+          x: pathBbox.x + (pathBbox.width / 2),
+          y: pathBbox.y + pathBbox.height + (this.label.spacing * 2)
+        });
+
+        this.setBounds(this.label);
+        this.label.element.toBack();
+        this.label.element.hover(elementHoverIn, elementHoverOut, this, this);
+      };
+
+      this.setBounds = function(element) {
+        var bBox = element.element.getBBox();
+        element.width  = bBox.width;
+        element.height = bBox.height;
+      };
+
+      this.draw = function() {
+        this.setPath();
+        this.setLabel();
+      };
+
+      this.setActionStyles = function(action) {
+        this.path.element.attr(this.path[action]);
+        this.label.element.attr(this.label[action]);
+
+        for (var i = this.firstIndex; i <= this.lastIndex; i++) {
+          var atom = this.sentence.atoms[i],
+              style = action === 'hover' ? 'underline' : 'normal';
+
+          atom.rect.element.attr(atom.rect[style]);
+        }
+      };
+    }
+
     $.fn.DTScrollByDrag = function(options) {
       var settings = $.extend({
           mousedown : null,
