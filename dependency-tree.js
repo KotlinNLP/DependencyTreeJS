@@ -282,9 +282,7 @@
       var _ = this;
 
       setTimeout(
-        function() {
-          _.drawSentence(sentenceIndex, true);
-        },
+        function() { _.drawSentence(sentenceIndex, true); },
         _.settings.drawDelay
       );
     };
@@ -505,7 +503,7 @@
           var atom = this.atoms[i];
           atom.rect.y = atomsTop;
 
-          if (i == 0) {
+          if (i === 0) {
             atom.rect.x = this.settings.styles.sentence.margin.horizontal;
           } else {
             var prevAtom = this.atoms[i - 1];
@@ -558,7 +556,7 @@
 
         spacingCount -= 1;
 
-        for(var i = lastId; i < this.atoms.length; i++) {
+        for(i = lastId; i < this.atoms.length; i++) {
           this.atoms[i].rect.x += (spacing * spacingCount);
         }
       };
@@ -752,7 +750,7 @@
         });
       };
 
-      this.setPos = function(synPos) {
+      this.setPos = function() {
         this.pos.element = this.raphael.text(0, 0, this.atomPos).attr(this.pos.normal);
         this.setBounds(this.pos);
       };
@@ -849,10 +847,9 @@
           dep.deprel.element.attr(this.deprel[action]);
         }
 
-        
-        var corefStyle = (action == 'normal') ? this.rect[action] : this.coref[action];
+        var corefStyle = (action === 'normal') ? this.rect[action] : this.coref[action];
 
-        for (var i = 0; i < this.atomCorefs.length; i++) {
+        for (i = 0; i < this.atomCorefs.length; i++) {
           var sentenceId = this.getSentenceIdByCorefIndex(i),
               atomId = this.getAtomIdByCorefIndex(i),
               corefAtom = this.DT.sentences[sentenceId].atoms[atomId - 1];
@@ -949,10 +946,8 @@
 
   $.fn.dependencyTree = function(options) {
     var element = this instanceof $ ? this : $(this),
-        dependencyTree = null;
+        dependencyTree = new DT(element, options);
 
-        
-    dependencyTree = new DT(element, options);
     $.data(element[0], "_dependencyTree", dependencyTree);
     
     return dependencyTree;
