@@ -247,8 +247,17 @@
         _.setAtom(sentenceObj, atom, depsMap[atom.id]);
       }
 
+      if (sentence.hasOwnProperty('entities')) {
+        _.setUnderlines(sentenceObj, sentence.entities);
+      }
+
+      if (sentence.hasOwnProperty('dates')) {
+        _.setUnderlines(sentenceObj, sentence.dates);
+      }
+
       sentenceObj.calculatePositions();
       sentenceObj.setAtomsPositions();
+      sentenceObj.drawUnderlines();
 
       _.sentences.push(sentenceObj);
       _.sentencesById[sentenceObj.id] = sentenceObj;
@@ -285,6 +294,25 @@
         function() { _.drawSentence(sentenceIndex, true); },
         _.settings.drawDelay
       );
+    };
+
+    DT.prototype.setUnderlines = function(sentence, underlines) {
+      var _ = this;
+
+      for (var i = 0; i < underlines.length; i++) {
+        var underline = underlines[i];
+        _.setUnderline(sentence, underline);
+      }
+    };
+
+    DT.prototype.setUnderline = function(sentence, underline) {
+      var _ = this,
+          underlineObj = new DTUnderline();
+      
+      underlineObj.init(sentence, underline);
+      underlineObj.setDT(_);
+      
+      sentence.addUnderline(underlineObj);
     };
 
     DT.prototype.setAtom = function(sentence, atom, atomDeps) {
