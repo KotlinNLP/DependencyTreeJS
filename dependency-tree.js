@@ -401,6 +401,7 @@
     function DTSentence() {
       this.id = null;
       this.atoms = [];
+      this.underlines = [];
       this.sortedAtoms = [];
       this.levels = null;
       this.container = null;
@@ -420,6 +421,10 @@
 
       this.addAtom = function(atom) {
         this.atoms.push(atom);
+      };
+
+      this.addUnderline = function(underline) {
+        this.underlines.push(underline);
       };
 
       this.sortingAtoms = function(a, b) {
@@ -542,16 +547,20 @@
 
       this.setSentenceSize = function() {
         var atom = this.atoms[this.atoms.length - 1];
+        
+        var height = atom.rect.y + atom.rect.height + atom.pos.height + atom.pos.spacing;
 
-        this.width = atom.rect.x +
-          atom.rect.width + this.settings.styles.sentence.margin.horizontal;
+        if (this.underlines.length > 0) {
+          var underline = this.underlines[this.underlines.length - 1];
+          height = underline.path.y + underline.path.height + underline.label.height;
+        }
 
-        this.height = atom.rect.y + atom.rect.height +
-          atom.pos.height + atom.pos.spacing +
-          this.settings.styles.sentence.margin.vertical;
+        this.width = atom.rect.x + atom.rect.width + this.settings.styles.sentence.margin.horizontal;
+        this.height = height + this.settings.styles.sentence.margin.vertical;
       };
 
       this.resize = function() {
+        this.setSentenceSize();
         this.raphael.setSize(this.width, this.height);
       };
 
@@ -615,7 +624,7 @@
           }
         }
 
-        this.setSentenceSize();
+        this.resize();
       };
 
       this.setAtomsPositions = function() {
@@ -635,13 +644,20 @@
           atom.setDeprelPosition(governor);
           atom.setDeprelPath(governor);
         }
+      };
+
+      this.drawUnderlines = function() {
+        var lenUnderlines = this.underlines.length;
+
+        for(var i = 0; i < lenUnderlines; i++) {
+          this.underlines[i].draw();
+        }
 
         this.resize();
       };
     }
 
     function DTAtom() {
-      this.atom = null;
       this.sentenceId = null;
       this.form = null;
       this.surfaceForm = null;
@@ -671,7 +687,7 @@
         this.rect = {
           x: 0, y: 0, width: 0, height: 0, element: null, normal: style.atom.rect.normal,
           hover: style.atom.rect.hover, click: style.atom.rect.click,
-          padding: style.atom.rect.padding
+          underline: style.atom.rect.underline, padding: style.atom.rect.padding
         };
 
         this.deprel = {
