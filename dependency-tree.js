@@ -30,7 +30,7 @@
               "normal": {
                 "fill": "",
                 "stroke": "#999",
-                "stroke-width": "1",
+                "stroke-width": 1,
                 "r": 4
               },
               "hover": {
@@ -40,6 +40,10 @@
               "click": {
                 "fill": "#81B6EE",
                 "stroke": "#3987DA"
+              },
+              "underline": {
+                "fill": "#B5B7EA",
+                "stroke": "#7679D8"
               }
             },
 
@@ -123,6 +127,32 @@
                 "stroke": "#3788DA",
                 "arrow-end": "classic-wide-long",
                 "stroke-width": 2
+              }
+            }
+          },
+          "underline": {
+            "height": 10,
+            "label": {
+              "spacing": 5,
+              "normal": {
+                "fill": "#7679D8",
+                "font": "7px Helvetica"
+              },
+              "hover": {
+                "fill": "#7679D8",
+                "font": "7px Helvetica",
+                "font-weight": "bold"
+              }
+            },
+            "path": {
+              "spacing": 10,
+              "normal": {
+                "stroke": "#666",
+                "stroke-width": 1
+              },
+              "hover": {
+                "stroke": "#7679D8",
+                "stroke-width": 1.5
               }
             }
           },
