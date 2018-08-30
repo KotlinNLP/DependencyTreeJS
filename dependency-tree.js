@@ -251,8 +251,8 @@
         _.setUnderlines(sentenceObj, sentence.entities);
       }
 
-      if (sentence.hasOwnProperty('dates')) {
-        _.setUnderlines(sentenceObj, sentence.dates);
+      if (sentence.hasOwnProperty('datetimes')) {
+        _.setUnderlines(sentenceObj, sentence.datetimes);
       }
 
       sentenceObj.calculatePositions();
