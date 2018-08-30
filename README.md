@@ -36,7 +36,7 @@ Data format
 
 Data are represented as a list of sentences.
 
-Each sentence is an object with the properties `id` and `atoms`.
+Each sentence is an object with the properties `id`, `atoms`, `entities` and `datetimes`.
 
 `atoms` is a list of atom objects with the following properties:
 * `id` the atom id, incremental and starting from 1 (0 is the 'root')
@@ -45,6 +45,16 @@ Each sentence is an object with the properties `id` and `atoms`.
 * `head` the id of the head
 * `deprel` the deprel label (can be null)
 * `corefs` list of objects: `{"sentenceId": <NUMBER>, "atomId": <NUMBER>}` (can be null)
+
+`entities` is a list of entity objects with the following properties (Optional):
+* `start_atom` the first atom index of the atoms list
+* `end_atom` the last atom index of the atoms list
+* `label` the label to show in the atoms underline
+
+`dates` is a list of dates objects with the following properties (Optional):
+* `start_atom` the first atom index of the atoms list
+* `end_atom` the last atom index of the atoms list
+* `label` the label to show in the atoms underline
 
 Example:
 ```javascript
@@ -69,7 +79,8 @@ Example:
                 "deprel": "cop",
                 "corefs": null,
                 "sem": null
-            },{
+            },
+            {
                 "id": 3,
                 "form": "awesome",
                 "pos": "JJ",
@@ -78,6 +89,25 @@ Example:
                 "corefs": null,
                 "sem": null
             }
+        ],
+        "entities": [ // list of entity objects
+            {
+                "start_atom": 1,
+                "end_atom": 1,
+                "label": "ORG"
+            },
+            {
+                "start_atom": 2,
+                "end_atom": 3,
+                "label": "PER"
+            }
+        ],
+        "datetimes": [ // list of datetime objects
+            {
+                "start_atom": 1,
+                "end_atom": 2,
+                "label": "Date"
+            },
         ]
     }
 ]
@@ -132,11 +162,17 @@ $("#dependency-tree").dependencyTree(options);
         },
         "atom": {
             "minSpacing": 10,
-    
+
             "rect": {
                 "padding": {
                     "horizontal": 10,
                     "vertical": 7
+                },
+                "normal": {
+                    "fill": "",
+                    "stroke": "#999",
+                    "stroke-width": 1,
+                    "r": 4
                 },
                 "hover": {
                     "fill": "#B5B7EA",
@@ -146,14 +182,12 @@ $("#dependency-tree").dependencyTree(options);
                     "fill": "#81B6EE",
                     "stroke": "#3987DA"
                 },
-                "normal": {
-                    "fill": "",
-                    "stroke": "#999",
-                    "stroke-width": "1",
-                    "r": 4
+                "underline": {
+                    "fill": "#B5B7EA",
+                    "stroke": "#7679D8"
                 }
             },
-    
+
             "coref": {
                 "rect": {
                     "hover": {
@@ -166,7 +200,7 @@ $("#dependency-tree").dependencyTree(options);
                     }
                 }
             },
-    
+
             "form": {
                 "normal": {
                     "fill": "#444",
@@ -181,7 +215,7 @@ $("#dependency-tree").dependencyTree(options);
                     "font": "16px Helvetica"
                 }
             },
-    
+
             "pos": {
                 "normal": {
                     "fill": "#7679D8",
@@ -219,12 +253,12 @@ $("#dependency-tree").dependencyTree(options);
             "spacing": 2,
             "path": {
                 "width": 1,
+                "spacing": 6,
                 "normal": {
                     "stroke": "#666",
                     "arrow-end": "classic-wide-long",
                     "stroke-width": 1
                 },
-                "spacing": 6,
                 "hover": {
                     "stroke": "#7679D8",
                     "arrow-end": "classic-wide-long",
@@ -234,6 +268,32 @@ $("#dependency-tree").dependencyTree(options);
                     "stroke": "#3788DA",
                     "arrow-end": "classic-wide-long",
                     "stroke-width": 2
+                }
+            }
+        },
+        "underline": {
+            "height": 10,
+            "label": {
+                "spacing": 5,
+                "normal": {
+                    "fill": "#7679D8",
+                    "font": "7px Helvetica"
+                },
+                "hover": {
+                    "fill": "#7679D8",
+                    "font": "7px Helvetica",
+                    "font-weight": "bold"
+                }
+            },
+            "path": {
+                "spacing": 10,
+                "normal": {
+                    "stroke": "#666",
+                    "stroke-width": 1
+                },
+                "hover": {
+                    "stroke": "#7679D8",
+                    "stroke-width": 1.5
                 }
             }
         },
