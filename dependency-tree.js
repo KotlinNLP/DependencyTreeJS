@@ -940,8 +940,8 @@
 
       this.init = function(sentence, underline) {
         this.sentence = sentence;
-        this.firstIndex = underline.first_index;
-        this.lastIndex = underline.last_index;
+        this.firstIndex = underline.start_atom;
+        this.lastIndex = underline.end_atom;
         var style = sentence.settings.styles;
 
         this.label = { element: null, text: underline.label, normal: style.underline.label.normal,
